@@ -86,7 +86,11 @@ public class InstallerService {
         return InstallerDTO.convert(installerRepository.findByInternId(id).orElseThrow(() -> new InstallerException("Invalid Id")));
     }
 
-    public Long getInstallerExtern(Long id) {
-        return installerIntegration.getInstaller(id).getId();
+    public InstallerDTO getInstallerExtern(Long id) {
+        return installerIntegration.getInstaller(id);
+    }
+
+    public InstallerDTO getInstallerIntern(Long id) {
+        return InstallerDTO.convert(installerRepository.findById(id).orElseThrow(() -> new InstallerException("Invalid Id")));
     }
 }

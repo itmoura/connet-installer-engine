@@ -33,8 +33,13 @@ public class InstallerResource {
     }
 
     @GetMapping(value = "/extern/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Long> getInstaller(@PathVariable Long id) {
+    public ResponseEntity<InstallerDTO> getInstaller(@PathVariable Long id) {
         return ResponseEntity.ok(installerService.getInstallerExtern(id));
+    }
+
+    @GetMapping(value = "/intern/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<InstallerDTO> getInstallerIntern(@PathVariable Long id) {
+        return ResponseEntity.ok(installerService.getInstallerIntern(id));
     }
 
     @PutMapping(value = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)

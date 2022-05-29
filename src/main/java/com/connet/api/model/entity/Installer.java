@@ -43,13 +43,16 @@ public class Installer implements Serializable {
     private Double lng;
 
     @Column(name = "rating")
-    private Integer rating;
+    private Float rating;
 
     @Column(name = "password")
     private String password;
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "qtd", columnDefinition = "int default 0")
+    private Integer qtd;
 
     public static Installer convert(InstallerDTO clientDTO) {
         Installer client = new Installer();
