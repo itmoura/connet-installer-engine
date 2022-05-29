@@ -75,14 +75,18 @@ public class InstallerService {
         return new String(new Base64().decode(passwordCripto));
     }
 
-    public Installer update(UUID id, InstallerDTO installerDTO) {
+    public UUID update(UUID id, InstallerDTO installerDTO) {
         Installer c = installerRepository.findByInternId(id).orElseThrow(() -> new InstallerException("Invalid Id"));
         installerDTO.setInternId(c.getInternId());
         installerDTO.setId(c.getId());
-        return installerRepository.save(Installer.convert(installerDTO));
+        return installerRepository.save(Installer.convert(installerDTO)).getInternId();
     }
 
     public InstallerDTO getInstaller(UUID id) {
         return InstallerDTO.convert(installerRepository.findByInternId(id).orElseThrow(() -> new InstallerException("Invalid Id")));
+    }
+
+    public Long getInstallerExtern(Long id) {
+        return installerIntegration.getInstaller(id).getId();
     }
 }
