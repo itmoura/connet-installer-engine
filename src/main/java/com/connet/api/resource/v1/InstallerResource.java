@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -30,6 +31,11 @@ public class InstallerResource {
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<InstallerDTO> getInstaller(@PathVariable UUID id) {
         return ResponseEntity.ok(installerService.getInstaller(id));
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<List<InstallerDTO>> getFullInstaller() {
+        return ResponseEntity.ok(installerService.getFullInstaller());
     }
 
     @GetMapping(value = "/extern/{id}", produces = APPLICATION_JSON_UTF8_VALUE)

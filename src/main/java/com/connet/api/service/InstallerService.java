@@ -10,9 +10,8 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -92,5 +91,29 @@ public class InstallerService {
 
     public InstallerDTO getInstallerIntern(Long id) {
         return InstallerDTO.convert(installerRepository.findById(id).orElseThrow(() -> new InstallerException("Invalid Id")));
+    }
+
+    public List<InstallerDTO> getFullInstaller() {
+        List<InstallerDTO> listInstaller = installerIntegration.getFullInstaller();
+        List<InstallerDTO> installerDTO = installerRepository.findAll().stream().map(InstallerDTO::convert).collect(Collectors.toList());
+        List<InstallerDTO> installers = new ArrayList<>();
+
+        listInstaller.parallelStream().forEach(list -> {
+            java.util.Optional<InstallerDTO> findAny = installerDTO.stream()
+                    .filter(d -> list.getId().equals(d.getId())).findAny();
+            installers.add(findAny.orElseGet(() -> InstallerDTO.builder()
+                    .id(list.getId())
+                    .name(list.getName())
+                    .rating(list.getRating())
+                    .pricePerKm(list.getPricePerKm())
+                    .lat(list.getLat())
+                    .lng(list.getLng())
+                    .phone(list.getPhone())
+                    .qtd(list.getQtd())
+                    .build()));
+        });
+
+
+        return installers;
     }
 }
